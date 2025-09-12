@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+[Table("products")]
 public class Products
 {
     [Key]
@@ -8,6 +9,7 @@ public class Products
 
     [Required]
     [StringLength(100)]
+
     public string ProductName { get; set; } = string.Empty;
 
     public int? CategoryID { get; set; }
@@ -19,7 +21,7 @@ public class Products
     public int Stock { get; set; }
 
     //relation property
-    [ForeignKey("CateoryID")]
+    [ForeignKey("CategoryID")]
     public virtual Category? Category { get; set; }
 
 }

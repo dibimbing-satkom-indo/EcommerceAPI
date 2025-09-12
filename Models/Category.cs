@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 public class Category
 {
@@ -7,6 +8,7 @@ public class Category
 
     [Required]
     [StringLength(100)]
+    [Column("CategoriName")]
     public string CategoryName { get; set; } = string.Empty;
 
     [StringLength(500)]

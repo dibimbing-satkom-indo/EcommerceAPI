@@ -14,102 +14,69 @@ public class ProductController : ControllerBase
 
     }
 
-    // //recomeded approach - stringly typed
-    // public async Task<ActionResult<Products>> GetProductByID(int id)
-    // {
-    //     await Task.Delay(100);
-    //     var NewProduct = new Products
-    //     {
-    //         ProductName = "laptop",
-    //         CategoryID = 1,
-    //         Price = 1000,
-    //         Stock = 5
-    //     };
-    //     if (NewProduct == null)
-    //     {
-    //         return NotFound(); //http 404
-
-    //     }
-    //     return NewProduct; // http 200 ok json data(implicit OK)
-
-    // }
-
-
-    // //when returning  deffrence type
-    // public async Task<IActionResult> GetProductById(int id)
-    // {
-    //     await Task.Delay(100);
-    //     var NewProduct = new Products
-    //     {
-    //         ProductName = "laptop",
-    //         CategoryID = 1,
-    //         Price = 1000,
-    //         Stock = 5
-    //     };
-    //     if (NewProduct == null)
-    //     {
-    //         return NotFound(); //http 404
-
-    //     }
-    //     return Ok(NewProduct); // explicit OK
-
-    // }
-
-
-
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Products>>> GetProducts([FromQuery] FilterDto filter)
+    public async Task<ActionResult<IEnumerable<ProductResponseDTO>>> GetAll()
     {
-        //url : GET /api/priducts?name=laptop&&minPrice=1000000&sortBy=price&pageNumber=2
-        // otomatis di bind ke FilterDto object 
-
-        await Task.Delay(100);
-        //var product = "this is produuct stuf";
-        return Ok(filter);
+        var products = await _productService.GetAllProduct();
+        if (products == null)
+        {
+            return NotFound(new BaseResponseDto<string>
+            {
+                Success = false,
+                Messages = " product not found",
+                Data = null
+            });
+        }
+        return Ok(new BaseResponseDto<IEnumerable<ProductResponseDTO>>
+        {
+            Success = true,
+            Messages = "success get all product",
+            Data = products
+        });
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Products>> GetProduct(int id)
+    public async Task<ActionResult<ProductResponseDTO>> GetProduct(int id)
     {
-        await Task.Delay(100);
-        var result = $"get product by id = {id}";
-        _logger.LogInformation("get data with {productID}: ", id); // information
-        _logger.LogWarning("get data with {productID}: ", id); // warning
-        _logger.LogError("get data with {productID}: ", id); // log error
-        _logger.LogTrace("get data with {productID}: ", id); // tace
-        _logger.LogDebug("get data with {productID}: ", id); // 
-        return StatusCode(200, result);
+        var product = await _productService.GetByIdAsync(id);
+        if (product == null)
+        {
+            return NotFound(new BaseResponseDto<string>
+            {
+                Success = false,
+                Messages = " product not found",
+                Data = null
+            });
+        }
+
+        return Ok(new BaseResponseDto<ProductResponseDTO>
+        {
+            Success = true,
+            Messages = "success get product",
+            Data = product
+        });
 
     }
 
-    [HttpGet("filter")] // query parameter GET api/product/search?name=laptop
-    public async Task<ActionResult<Products>> SearchProduct(string cari)
+    [HttpGet("filter")]
+    public async Task<ActionResult<PagedResponse<ProductResponseDTO>>> GetProducts([FromQuery] FilterDto filter)
     {
-        await Task.Delay(100);
-        var result = $"search product by name = {cari}";
-        return StatusCode(200, result);
-
+        var result = await _productService.GetProductsAsync(filter);
+        return Ok(result);
     }
 
 
     [HttpPost]
-    public async Task<ActionResult<Products>> CreateProduct(CreateProductDto productDto)
+    public async Task<ActionResult<ProductResponseDTO>> CreateProduct(CreateProductDto productDto)
     {
-        await Task.Delay(100); //simulate call a servvice 
+        var result = await _productService.CreateAsync(productDto);
 
-        var NewProduct = new Products
-        {
-            ProductName = productDto.ProductName,
-            CategoryID = productDto.CtegoryID,
-            Price = productDto.Price,
-            Stock = productDto.Stock
-        };
 
-        return StatusCode(201, new BaseResponseDto<Products>
+        return StatusCode(201, new BaseResponseDto<ProductResponseDTO>
         {
             Success = true,
             Messages = "add product is success",
-            Data = NewProduct
+            Data = result
 
         });
     }

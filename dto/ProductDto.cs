@@ -16,3 +16,12 @@ public class CreateProductDto
     public int CtegoryID { get; set; }
 
 }
+
+public class ProductResponseDTO
+{
+    public int ProductID { get; set; }
+    public string ProductName { get; set; } = string.Empty;
+    public decimal Price { get; set; }
+    public string CategoryName { get; set; } = string.Empty;
+    public int Stock { get; set; }
+}

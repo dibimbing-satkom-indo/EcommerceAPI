@@ -1,6 +1,7 @@
 public interface IProductService
 {
-
-    Task<IEnumerable<Products>> GetAllProduct();
-    Task<Products?> GetPriductByID(int id);
+    Task<ProductResponseDTO> CreateAsync(CreateProductDto dto);
+    Task<IEnumerable<ProductResponseDTO>> GetAllProduct();
+    Task<ProductResponseDTO?> GetByIdAsync(int id);
+    Task<PagedResponse<ProductResponseDTO>> GetProductsAsync(FilterDto filter);
 }

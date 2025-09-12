@@ -1,4 +1,14 @@
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+//Add DBContext
+builder.Services.AddDbContext<ApplicationDBContext>(option =>
+option.UseSqlServer(
+    builder.Configuration.GetConnectionString("DefaultConnection"))
+    .LogTo(Console.WriteLine, LogLevel.Information)
+);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -15,8 +25,12 @@ builder.Services.AddSwaggerGen(c =>
 });
 builder.Services.AddControllers();
 
-//Custom servvice Registration Depedency Injection (DI)
+//Custom service Registration Depedency Injection (DI)
 builder.Services.AddScoped<IProductService, ProductService>();
+
+//add repository Depedency injection
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
 
 //Configure CORS 
 builder.Services.AddCors(option =>
