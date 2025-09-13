@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,9 +28,17 @@ builder.Services.AddControllers();
 
 //Custom service Registration Depedency Injection (DI)
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+
 
 //add repository Depedency injection
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IUserRepository, UserReposioty>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+
+//register unity of work
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 
 //Configure CORS 
