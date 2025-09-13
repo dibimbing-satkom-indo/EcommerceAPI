@@ -50,7 +50,7 @@ public class ProductService : IProductService
     public async Task<ProductResponseDTO?> GetByIdAsync(int id)
     {
         var product = await _ProductRepo.GetProductAsync(id);
-        if (product == null) return null;
+        if (product == null) throw new KeyNotFoundException("product not found");
 
         return new ProductResponseDTO
         {
@@ -89,4 +89,68 @@ public class ProductService : IProductService
             PreviousPage = filter.PageNumber > 1 ? filter.PageNumber - 1 : null
         };
     }
+
+    public async Task<Products?> UpdateAsync(int id, ProducUpdatetDto dto)
+    {
+        var product = await _ProductRepo.GetProductAsync(id);
+        if (product == null) throw new KeyNotFoundException("product not found"); ;
+
+        //semua field wajib di isi
+        if (string.IsNullOrEmpty(dto.ProductName) ||
+        !dto.Price.HasValue ||
+        !dto.Stock.HasValue ||
+        !dto.CategoryID.HasValue)
+        {
+            return null;
+
+        }
+        product.ProductName = dto.ProductName;
+        product.Price = dto.Price.Value;
+        product.Stock = dto.Stock.Value;
+        product.CategoryID = dto.CategoryID.Value;
+
+        await _ProductRepo.UpdateAsync(product);
+        return product;
+
+
+    }
+
+    public async Task<Products?> PatchAsync(int id, ProducUpdatetDto dto)
+    {
+        var product = await _ProductRepo.GetProductAsync(id);
+        if (product == null) return null;
+
+        //update hanya field yang di isi
+        if (!string.IsNullOrEmpty(dto.ProductName)) product.ProductName = dto.ProductName;
+        if (dto.Price > 0) product.Price = dto.Price.Value;
+        if (dto.Stock > 0) product.Stock = dto.Stock.Value;
+        if (dto.CategoryID.HasValue) product.CategoryID = dto.CategoryID.Value;
+
+        await _ProductRepo.UpdateAsync(product);
+        return product;
+
+    }
+    //soft delete
+    public async Task<bool> SoftDeleteAsync(int id)
+    {
+        var product = await _ProductRepo.GetProductAsync(id);
+        if (product == null) return false;
+
+        product.IsActive = false;
+        await _ProductRepo.UpdateAsync(product);
+        return true;
+    }
+
+    //hard delete
+    public async Task<bool> HarddeleteAsync(int id)
+    {
+        var product = await _ProductRepo.GetProductAsync(id);
+        if (product == null) return false;
+
+        product.IsActive = false;
+        await _ProductRepo.DeleteAsync(product);
+        return true;
+
+    }
+
 }

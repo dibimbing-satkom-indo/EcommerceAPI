@@ -4,4 +4,6 @@ public interface IProductRepository
     Task<IEnumerable<Products>> GetAllAsync();
     Task<Products?> GetProductAsync(int id);
     Task<(IEnumerable<Products>, int)> GetFilteredproductSync(FilterDto filter);
+    Task UpdateAsync(Products product);
+    Task DeleteAsync(Products products);
 }

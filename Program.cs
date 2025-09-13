@@ -47,6 +47,9 @@ builder.Services.AddCors(option =>
 
 var app = builder.Build();
 
+//exception handling middleware registration
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

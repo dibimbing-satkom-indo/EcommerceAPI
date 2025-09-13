@@ -39,15 +39,6 @@ public class ProductController : ControllerBase
     public async Task<ActionResult<ProductResponseDTO>> GetProduct(int id)
     {
         var product = await _productService.GetByIdAsync(id);
-        if (product == null)
-        {
-            return NotFound(new BaseResponseDto<string>
-            {
-                Success = false,
-                Messages = " product not found",
-                Data = null
-            });
-        }
 
         return Ok(new BaseResponseDto<ProductResponseDTO>
         {
@@ -79,6 +70,53 @@ public class ProductController : ControllerBase
             Data = result
 
         });
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> PutProduct(int id, [FromBody] ProducUpdatetDto dto)
+    {
+        await _productService.UpdateAsync(id, dto);
+        return Ok(new { Message = "product update successfully" });
+    }
+
+    [HttpPatch("{id}")]
+    public async Task<IActionResult> PatchProduct(int id, ProducUpdatetDto dto)
+    {
+        try
+        {
+            var updated = await _productService.PatchAsync(id, dto);
+            if (updated == null) return NotFound(new { message = $"product with ID {id} not found" });
+            return Ok(new { Message = "product patch successfully" });
+        }
+        catch (ArgumentException ex)
+        {
+
+            return BadRequest(new { Messages = ex.Message });
+        }
+    }
+
+    //soft delete
+    [HttpDelete("soft/{id}")]
+    public async Task<IActionResult> SoftDelete(int id)
+    {
+        var result = await _productService.SoftDeleteAsync(id);
+        if (!result) return
+            NotFound(new { message = $" product ID {id} not found" });
+        return StatusCode(
+            200,
+            new { message = "product soft deleted {IsActive = false}" });
+    }
+
+    //hard delete
+    [HttpDelete("hard/{id}")]
+    public async Task<IActionResult> HardDeleteAsync(int id)
+    {
+        var result = await _productService.HarddeleteAsync(id);
+        if (!result) return
+            NotFound(new { message = $" product ID {id} not found" });
+        return StatusCode(
+            200,
+            new { message = "product permanently deleted" });
     }
 
 

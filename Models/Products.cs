@@ -20,6 +20,8 @@ public class Products
 
     public int Stock { get; set; }
 
+    public bool IsActive { get; set; }
+
     //relation property
     [ForeignKey("CategoryID")]
     public virtual Category? Category { get; set; }

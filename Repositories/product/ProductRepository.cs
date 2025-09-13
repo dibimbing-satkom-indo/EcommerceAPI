@@ -19,6 +19,7 @@ public class ProductRepository : IProductRepository
     public async Task<IEnumerable<Products>> GetAllAsync()
     {
         var products = await _dbCtx.Products
+        .Where(p => p.IsActive == true)
         .Include(p => p.Category)
         .ToListAsync();
 
@@ -84,5 +85,19 @@ public class ProductRepository : IProductRepository
         .ToListAsync();
 
         return (products, totalData);
+    }
+
+    public async Task UpdateAsync(Products product)
+    {
+        _dbCtx.Products.Update(product);
+        await _dbCtx.SaveChangesAsync();
+
+    }
+
+    //hard delete
+    public async Task DeleteAsync(Products products)
+    {
+        _dbCtx.Products.Remove(products);
+        await _dbCtx.SaveChangesAsync();
     }
 }

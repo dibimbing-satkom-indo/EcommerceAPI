@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 public class CreateProductDto
 {
@@ -24,4 +25,14 @@ public class ProductResponseDTO
     public decimal Price { get; set; }
     public string CategoryName { get; set; } = string.Empty;
     public int Stock { get; set; }
+}
+
+public class ProducUpdatetDto
+{
+    public string ProductName { get; set; } = string.Empty;
+    public decimal? Price { get; set; }
+    public int? Stock { get; set; }
+    public int? CategoryID { get; set; }
+
+
 }
