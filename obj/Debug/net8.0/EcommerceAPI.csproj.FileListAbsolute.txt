@@ -168,3 +168,4 @@
 /Users/bowobudiprasetyo/Documents/dibimbing/EcommerceAPI/obj/Debug/net8.0/EcommerceAPI.pdb
 /Users/bowobudiprasetyo/Documents/dibimbing/EcommerceAPI/obj/Debug/net8.0/EcommerceAPI.genruntimeconfig.cache
 /Users/bowobudiprasetyo/Documents/dibimbing/EcommerceAPI/obj/Debug/net8.0/ref/EcommerceAPI.dll
+/Users/bowobudiprasetyo/Documents/dibimbing/EcommerceAPI/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll

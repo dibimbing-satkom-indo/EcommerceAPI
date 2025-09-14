@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
@@ -25,5 +26,22 @@ public class AuthController : ControllerBase
         return StatusCode(200, result);
 
     }
+
+    [Authorize(Roles = "customer")]
+    [HttpPost("complete-profile")]
+    public async Task<IActionResult> CompleteProfileAsync([FromBody] CompleteProfileDto dto)
+    {
+        var userID = int.Parse(User.FindFirst("UserID")!.Value);
+        var result = await _auth.CompleteProfileAsyync(userID, dto);
+        return Ok(result);
+    }
+
+    [Authorize(Roles = "admin")]
+    [HttpGet("admin-onle")]
+    public IActionResult AdminOnlyEndpoint()
+    {
+        return Ok("only admin can be access");
+    }
+
 
 }
