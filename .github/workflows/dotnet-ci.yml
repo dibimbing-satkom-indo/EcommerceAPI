@@ -1,0 +1,34 @@
+name: .NET Core CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Checkout source code
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    # 2. Setup .NET SDK
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x   # sesuaikan versi .NET Core kamu
+
+    # 3. Restore dependencies
+    - name: Restore dependencies
+      run: dotnet restore
+
+    # 4. Build project
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+
+    # 5. Run tests (kalau ada project test)
+    - name: Run tests
+      run: dotnet test --no-build --verbosity normal
