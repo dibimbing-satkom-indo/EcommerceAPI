@@ -121,20 +121,32 @@ public class ProductController : ControllerBase
             new { message = "product permanently deleted" });
     }
 
+    [HttpGet("product-redis/{id}")]
     public async Task<IActionResult> GetProductRedis(int id)
     {
-        //coba amvil dari cache
-        var cahce = await _redis.getStringAsync($"product{id}");
+        //coba get dari cache
+        var cahce = await _redis.getStringAsync($"product:{id}");
+        _logger.LogInformation(cahce);
         if (cahce != null)
         {
             return Ok(new { source = "cahce", data = cahce });
 
         }
 
+        /*
+        TODO: 
+        - service layer
+        explore data real form database then input to redis
+        */
+
         //kalau tidak ada di redis -> ambil dari db
         var product = $"produc {id} from databse";
+
+        //simpna ke redis
         await _redis.SetStringAsync($"product:{id}", product);
-        return Ok(new { source = "cahce", data = product });
+
+
+        return Ok(new { source = "databse", data = product });
     }
 
 

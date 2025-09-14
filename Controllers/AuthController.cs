@@ -37,7 +37,7 @@ public class AuthController : ControllerBase
     }
 
     [Authorize(Roles = "admin")]
-    [HttpGet("admin-onle")]
+    [HttpGet("admin-only")]
     public IActionResult AdminOnlyEndpoint()
     {
         return Ok("only admin can be access");
