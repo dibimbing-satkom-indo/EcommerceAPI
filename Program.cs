@@ -5,8 +5,18 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// ambil config dari appsettings.json
+var redisConnection = builder.Configuration.GetConnectionString("Redis")
+ ?? throw new InvalidCastException("Redis connsction is missing from configuration");
+
+//register redis
+builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+    ConnectionMultiplexer.Connect(redisConnection)
+);
 
 //Add DBContext
 builder.Services.AddDbContext<ApplicationDBContext>(option =>
@@ -81,6 +91,7 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<IRedisService, RedisService>();
 
 
 //add repository Depedency injection

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "wUieky7vca8=",
+  "dgSpecHash": "H2+axAteILY=",
   "success": true,
   "projectFilePath": "/Users/bowobudiprasetyo/Documents/dibimbing/EcommerceAPI/EcommerceAPI.csproj",
   "expectedPackageFiles": [
@@ -50,6 +50,8 @@
     "/Users/bowobudiprasetyo/.nuget/packages/microsoft.sqlserver.server/1.0.0/microsoft.sqlserver.server.1.0.0.nupkg.sha512",
     "/Users/bowobudiprasetyo/.nuget/packages/microsoft.win32.systemevents/6.0.0/microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "/Users/bowobudiprasetyo/.nuget/packages/mono.texttemplating/3.0.0/mono.texttemplating.3.0.0.nupkg.sha512",
+    "/Users/bowobudiprasetyo/.nuget/packages/pipelines.sockets.unofficial/2.2.8/pipelines.sockets.unofficial.2.2.8.nupkg.sha512",
+    "/Users/bowobudiprasetyo/.nuget/packages/stackexchange.redis/2.9.17/stackexchange.redis.2.9.17.nupkg.sha512",
     "/Users/bowobudiprasetyo/.nuget/packages/swashbuckle.aspnetcore/6.4.0/swashbuckle.aspnetcore.6.4.0.nupkg.sha512",
     "/Users/bowobudiprasetyo/.nuget/packages/swashbuckle.aspnetcore.swagger/6.4.0/swashbuckle.aspnetcore.swagger.6.4.0.nupkg.sha512",
     "/Users/bowobudiprasetyo/.nuget/packages/swashbuckle.aspnetcore.swaggergen/6.4.0/swashbuckle.aspnetcore.swaggergen.6.4.0.nupkg.sha512",

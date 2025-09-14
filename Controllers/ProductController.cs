@@ -6,11 +6,13 @@ public class ProductController : ControllerBase
 {
     private readonly IProductService _productService;
     private readonly ILogger<ProductController> _logger;
+    private readonly IRedisService _redis;
 
-    public ProductController(IProductService productService, ILogger<ProductController> logger)
+    public ProductController(IProductService productService, ILogger<ProductController> logger, IRedisService redis)
     {
         _productService = productService;
         _logger = logger;
+        _redis = redis;
 
     }
 
@@ -117,6 +119,22 @@ public class ProductController : ControllerBase
         return StatusCode(
             200,
             new { message = "product permanently deleted" });
+    }
+
+    public async Task<IActionResult> GetProductRedis(int id)
+    {
+        //coba amvil dari cache
+        var cahce = await _redis.getStringAsync($"product{id}");
+        if (cahce != null)
+        {
+            return Ok(new { source = "cahce", data = cahce });
+
+        }
+
+        //kalau tidak ada di redis -> ambil dari db
+        var product = $"produc {id} from databse";
+        await _redis.SetStringAsync($"product:{id}", product);
+        return Ok(new { source = "cahce", data = product });
     }
 
 
